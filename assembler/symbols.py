@@ -30,7 +30,7 @@ class _Symbols(object):
             "SCREEN": 16384,
             "KBD": 24576,
         })
-        for num in range(15):
+        for num in range(16):
             self.SYMBOLS["R%s" % num] = num
 
     def _cleanup(self, name):
