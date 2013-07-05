@@ -1,5 +1,3 @@
-import os
-import tempfile
 import unittest
 
 from main import prepare_machine_code
