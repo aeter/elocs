@@ -33,32 +33,34 @@ class _Symbols(object):
         for num in range(15):
             self.SYMBOLS["R%s" % num] = num
 
-    def _strip_variable_declarations(self, name):
-        # strip variable declarators like "(name)" or "@name"
+    def _cleanup(self, name):
+        # strip "(name)" or "@name" to "name"
         if name.startswith('(') and name.endswith(')'):
             return name[1:-1]
         elif name.startswith('@'):
             return name[1:]
 
-    def add_symbol_variable(self, name):
+    def allocate(self, name, address=None):
         '''
         name (str)
-            like '@i'
-        '''
-        name = self._strip_variable_declarations(name)
-        # each new @variable gets allocated a consecutive memory address
-        self.SYMBOLS[name] = self.LAST_ALLOCATED_ADDRESS
-        self.LAST_ALLOCATED_ADDRESS += 1
-
-    def add_label_variable(self, name, address):
-        '''
-        name (str)
-            like '(end)' or '(loop)', etc.
+            like '@i' or '(loop)' or '(end)', etc.
         address (int)
         '''
-        name = self._strip_variable_declarations(name)
-        self.SYMBOLS[name] = address
+        name = self._cleanup(name)
+        if address is None:
+            # each new @variable gets allocated a consecutive memory address
+            self.SYMBOLS[name] = self.LAST_ALLOCATED_ADDRESS
+            self.LAST_ALLOCATED_ADDRESS += 1
+        else:
+            # the '(word)' variables are allocated at specific ROM address 
+            self.SYMBOLS[name] = address
 
     def contains(self, name):
-        name = self._strip_variable_declarations(name)
+        '''name (str)'''
+        name = self._cleanup(name)
         return bool(name in self.SYMBOLS)
+
+    def get_address(self, name):
+        '''name (str)'''
+        name = self._cleanup(name)
+        return self.SYMBOLS[name]

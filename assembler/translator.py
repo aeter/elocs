@@ -68,18 +68,29 @@ def make_machine_code(symbols, parsed_lines):
     '''
     symbols (assembler.symbols._Symbols instance)
     parsed_lines (list of dicts)
+
+    returns: (list of strings)
+        like ['000000000001000', '0000110001010000', ...]
     '''
     # first pass: just collecting all label symbols and their ROM address.
-    collect_label_symbols(symbols, parsed_lines)
+    collect_label_variables(symbols, parsed_lines)
 
-    # second pass
+    # second pass, translate each translatable assembler line to machine code
     translated = []
     for line in lines:
         if line['type'] in ('comment', 'label_variable',):
             continue
-        # TODO
+        elif line['type'] == 'symbol_variable':
+            if symbols.contains(line['symbol']):
+                translated.append(to_binary(
+                    symbols.get_address(line['symbol'])))
+            else:
+                symbols.allocate(line['symbol'])
+        elif line['type'] == 'instruction':
+            # TODO
+    return translated
 
-def collect_label_symbols(symbols, lines):
+def collect_label_variables(symbols, lines):
     '''
     symbols (assembler.symbols._Symbols instance)
     lines (list of dicts)
@@ -90,7 +101,7 @@ def collect_label_symbols(symbols, lines):
             if symbols.contains(line['symbol']):
                 raise TranslatorError('Label %s can be defined only once' %
                         line['symbol'])
-            symbols.add_label_variable(line['symbol'], address_ROM)
+            symbols.allocate(line['symbol'], address_ROM)
         else:
             address_ROM += 1
 
