@@ -30,6 +30,7 @@ class _Symbols(object):
             "SCREEN": 16384,
             "KBD": 24576,
         })
+        # By specification, there are the R0-R15 symbols too
         for num in range(16):
             self.SYMBOLS["R%s" % num] = num
 
