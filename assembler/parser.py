@@ -22,31 +22,27 @@ def parse(assembler_lines):
     parsed_lines = []
     for line in assembler_lines:
         line = line.strip()
-        if is_comment(line):
-            parsed_lines.append({
-                'type': 'comment',
-                'symbol': line,
-            })
-        elif is_symbol_variable(line):
-            parsed_lines.append({
-                'type': 'symbol_variable',
-                'symbol': line,
-            })
+        line, comment = parse_comment(line)
+        parsed = {'comment': comment}
+
+        if is_symbol_variable(line):
+            parsed.update({'type': 'symbol_variable', 'symbol': line,})
         elif is_label_variable(line):
-            parsed_lines.append({
-                'type': 'label_variable',
-                'symbol': line,
-            })
+            parsed.update({'type': 'label_variable', 'symbol': line,})
         else: # an instruction?
             try:
-                parsed_lines.append(parse_instruction(line))
+                parsed.update(parse_instruction(line))
             except ValueError:
                 raise ParserError('Invalid assembler: %s' % line)
+        parsed_lines.append(parsed)
     return parsed_lines
 
-def is_comment(line):
-    '''line (str)'''
-    return bool(line.startswith('//'))
+def parse_comment(line):
+    try:
+        line, comment = line.split('//', 1)
+    except ValueError:
+        comment = None
+    return line, comment
 
 def is_label_variable(line):
     '''line (str)'''
