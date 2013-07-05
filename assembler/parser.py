@@ -76,5 +76,3 @@ def parse_instruction(line):
     else:
         parsed.update({'comp': line.strip()})
     return parsed
-
-    print parsed_lines[0]

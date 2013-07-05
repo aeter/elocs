@@ -93,7 +93,7 @@ def make_machine_code(symbols, parsed_lines):
             instruction += COMPS[line['comp']]
             instruction += DESTS[line['dest']]
             instruction += JUMPS[line['jump']]
-            translated.append(''.join(instruction))
+            translated.append(''.join(map(str, instruction)))
     return translated
 
 def to_binary(num):
