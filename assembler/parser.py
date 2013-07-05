@@ -27,7 +27,7 @@ def parse(assembler_lines):
                 'type': 'comment',
                 'symbol': line,
             })
-        elif line.startswith('@'):
+        elif is_symbol_variable(line):
             parsed_lines.append({
                 'type': 'symbol_variable',
                 'symbol': line,
@@ -52,6 +52,10 @@ def is_label_variable(line):
     '''line (str)'''
     return bool(re.match(LABEL_VARIABLE_RE, line))
 
+def is_symbol_variable(line):
+    '''line(str)'''
+    return bool(line.startswith('@'))
+
 def parse_instruction(line):
     '''
     line (str)
@@ -69,5 +73,11 @@ def parse_instruction(line):
         parsed.update({'comp': comp, 'jump': jump})
     else:
         parsed.update({'comp': line})
+
+    # fill defaults of 'null' for jump and dest
+    if not 'dest' in parsed:
+        parsed['dest'] = 'null'
+    if not 'jump' in parsed:
+        parsed['jump'] = 'null'
     return parsed
 

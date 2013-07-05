@@ -89,8 +89,11 @@ def make_machine_code(symbols, parsed_lines):
                 translated.append(to_binary(
                     symbols.get_address(line['symbol'])))
         elif line['type'] == 'instruction':
-            # TODO
-            5
+            instruction = [1, 1, 1]
+            instruction += COMPS[line['comp']]
+            instruction += DESTS[line['dest']]
+            instruction += JUMPS[line['jump']]
+            translated.append(''.join(instruction))
     return translated
 
 def to_binary(num):
