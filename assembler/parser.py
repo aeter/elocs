@@ -25,7 +25,9 @@ def parse(assembler_lines):
         line, comment = parse_comment(line)
         parsed = {'comment': comment}
 
-        if is_symbol_variable(line):
+        if not line: # the whole line is one comment, starting with '//'
+            parsed.update({'type': 'comment'})
+        elif is_symbol_variable(line):
             parsed.update({'type': 'symbol_variable', 'symbol': line,})
         elif is_label_variable(line):
             parsed.update({'type': 'label_variable', 'symbol': line,})
@@ -67,11 +69,12 @@ def parse_instruction(line):
     }
     if '=' in line:
         dest, line = line.split('=')
-        parsed.update({'dest': dest})
+        parsed.update({'dest': dest.strip()})
     if ';' in line:
         comp, jump = line.split(';')
-        parsed.update({'comp': comp, 'jump': jump})
+        parsed.update({'comp': comp.strip(), 'jump': jump.strip()})
     else:
-        parsed.update({'comp': line})
+        parsed.update({'comp': line.strip()})
     return parsed
 
+    print parsed_lines[0]

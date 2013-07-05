@@ -57,7 +57,7 @@ class TestMain(unittest.TestCase):
     An integration test of several modules.
     '''
     def test_translating_to_machine_code(self):
-        result = prepare_machine_code(ASSEMBLER_CODE_SUM_HUNDRED)
+        result = prepare_machine_code(ASSEMBLER_CODE_SUM_HUNDRED.splitlines())
         expected_result = MACHINE_CODE_SUM_HUNDRED
         self.assertEqual(result, expected_result)
 
