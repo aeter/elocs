@@ -77,7 +77,7 @@ def make_machine_code(symbols, parsed_lines):
 
     # second pass, translate each translatable assembler line to machine code
     translated = []
-    for line in lines:
+    for line in parsed_lines:
         if line['type'] in ('comment', 'label_variable',):
             continue
         elif line['type'] == 'symbol_variable':
