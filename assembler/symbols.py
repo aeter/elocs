@@ -39,6 +39,8 @@ class _Symbols(object):
             return name[1:-1]
         elif name.startswith('@'):
             return name[1:]
+        else:
+            return name
 
     def allocate(self, name, address=None):
         '''
