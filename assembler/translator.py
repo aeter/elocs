@@ -85,9 +85,11 @@ def make_machine_code(symbols, parsed_lines):
                 translated.append(to_binary(
                     symbols.get_address(line['symbol'])))
             else: # new variable?
+                # like @100
                 if line['symbol'].lstrip('@').isdigit():
                     translated.append(to_binary(
                         int(line['symbol'].lstrip('@'))))
+                # like @i
                 else:
                     symbols.allocate(line['symbol'])
                     translated.append(to_binary(
