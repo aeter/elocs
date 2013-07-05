@@ -22,7 +22,7 @@ def parse(assembler_lines):
     parsed_lines = []
     for line in assembler_lines:
         line = line.strip()
-        line, comment = parse_comment(line)
+        line, comment = strip_comment(line)
         parsed = {'comment': comment}
 
         if not line: # the whole line is one comment, starting with '//'
@@ -36,10 +36,11 @@ def parse(assembler_lines):
                 parsed.update(parse_instruction(line))
             except ValueError:
                 raise ParserError('Invalid assembler: %s' % line)
+
         parsed_lines.append(parsed)
     return parsed_lines
 
-def parse_comment(line):
+def strip_comment(line):
     try:
         line, comment = line.split('//', 1)
     except ValueError:
