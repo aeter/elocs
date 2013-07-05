@@ -32,9 +32,38 @@ COMPS = {
     
 }
 
+
+class TranslatorError(Exception):
+    '''A generic TranslatorError'''
+
+
 def make_machine_code(symbols, parsed_lines):
     '''
     parsed_lines (list of dicts)
     symbols (assembler.symbols._Symbols instance)
     '''
-    # TODO
+    # first pass: just collecting all label symbols and their ROM address.
+    collect_label_symbols(symbols, parsed_lines)
+
+    # second pass
+    translated = []
+    for line in lines:
+        if line['type'] in ('comment', 'label_variable',):
+            continue
+        # TODO
+
+def collect_label_symbols(symbols, lines):
+    '''
+    symbols (assembler.symbols._Symbols instance)
+    lines (list of dicts)
+    '''
+    address_ROM = 0
+    for line in lines:
+        if line['type'] == 'label_variable':
+            if symbols.contains(line['symbol']):
+                raise TranslatorError('Label %s can be defined only once' %
+                        line['symbol'])
+            symbols.add_label_variable(line['symbol'], address_ROM)
+        else:
+            address_ROM += 1
+
