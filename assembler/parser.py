@@ -16,7 +16,7 @@ class ParserError(Exception):
 
 def parse(assembler_lines, symbols):
     '''
-    symbols (assembler.lib._Symbols instance)
+    symbols (assembler.symbols._Symbols instance)
     assembler lines (list of strings)
 
     returns: (list of dicts)
@@ -59,8 +59,8 @@ def is_comment(line):
 
 def collect_label_symbols(symbols, lines):
     '''
-    symbols (assembler.lib._Symbols instance)
-    assembler lines (list of strings)
+    symbols (assembler.symbols._Symbols instance)
+    lines (list of strings)
     '''
     address_ROM = 0
     for line in lines:
@@ -77,7 +77,6 @@ def parse_instruction(line):
     line (str)
 
     returns: (dict)
-        like ...
     '''
     # an instruction is like any of:
     # ['dest=comp;jump', 'comp;jump', 'dest=comp']
