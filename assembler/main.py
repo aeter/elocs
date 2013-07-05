@@ -21,7 +21,7 @@ def main(args):
     symbols = get_symbols()
     with open(asm_file, 'r') as f:
         assembler_lines = f.readlines()
-    parsed_lines = parse(symbols, assembler_lines)
+    parsed_lines = parse(assembler_lines, symbols)
     # TODO - translate parsed lines into machine code
     # TODO - write the machine code in a file.
     return 0

@@ -79,4 +79,16 @@ def parse_instruction(line):
     returns: (dict)
         like ...
     '''
-    #TODO
+    # an instruction is like any of:
+    # ['dest=comp;jump', 'comp;jump', 'dest=comp']
+    parsed = {'type': 'instruction'}
+    if '=' in line:
+        dest, line = line.split('=')
+        parsed.update({'dest': dest})
+    if ';' in line:
+        comp, jump = line.split(';')
+        parsed.update({'comp': comp, 'jump': jump})
+    else:
+        parsed.update({'comp': line})
+    return parsed
+
