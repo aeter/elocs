@@ -113,6 +113,8 @@ def collect_label_variables(symbols, lines):
     '''
     address_ROM = 0
     for line in lines:
+        if line['type'] == 'comment':
+            continue
         if line['type'] == 'label_variable':
             if symbols.contains(line['symbol']):
                 raise TranslatorError('Label %s can be defined only once' %
