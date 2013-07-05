@@ -59,6 +59,9 @@ class TestMain(unittest.TestCase):
     def test_translating_to_machine_code(self):
         result = prepare_machine_code(ASSEMBLER_CODE_SUM_HUNDRED.splitlines())
         expected_result = MACHINE_CODE_SUM_HUNDRED.splitlines()
+        print result
+        print '---'
+        print expected_result
         self.assertEqual(result, expected_result)
 
 

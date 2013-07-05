@@ -85,9 +85,13 @@ def make_machine_code(symbols, parsed_lines):
                 translated.append(to_binary(
                     symbols.get_address(line['symbol'])))
             else: # new variable?
-                symbols.allocate(line['symbol'])
-                translated.append(to_binary(
-                    symbols.get_address(line['symbol'])))
+                if line['symbol'].lstrip('@').isdigit():
+                    translated.append(to_binary(
+                        int(line['symbol'].lstrip('@'))))
+                else:
+                    symbols.allocate(line['symbol'])
+                    translated.append(to_binary(
+                        symbols.get_address(line['symbol'])))
         elif line['type'] == 'instruction':
             instruction = [1, 1, 1]
             instruction += COMPS[line['comp']]
