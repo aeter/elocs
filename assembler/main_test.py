@@ -28,7 +28,7 @@ ASSEMBLER_CODE_SUM_HUNDRED = """// Adds 1 + ... + 100
     0;JMP //infinite loop, exits program."""
 
 def remove_whitespaces(text):
-    return ''.join(text.split())
+    return '\n'.join(''.join(line.split()) for line in text.splitlines())
 MACHINE_CODE_SUM_HUNDRED = remove_whitespaces(
 """0000 0000 0001 0000
 1110 1111 1100 1000
@@ -58,7 +58,7 @@ class TestMain(unittest.TestCase):
     '''
     def test_translating_to_machine_code(self):
         result = prepare_machine_code(ASSEMBLER_CODE_SUM_HUNDRED.splitlines())
-        expected_result = MACHINE_CODE_SUM_HUNDRED
+        expected_result = MACHINE_CODE_SUM_HUNDRED.splitlines()
         self.assertEqual(result, expected_result)
 
 
