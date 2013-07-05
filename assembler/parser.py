@@ -64,7 +64,11 @@ def parse_instruction(line):
     '''
     # an instruction is like any of:
     # ['dest=comp;jump', 'comp;jump', 'dest=comp']
-    parsed = {'type': 'instruction'}
+    parsed = {
+        'type': 'instruction',
+        'dest': 'null',
+        'jump': 'null',
+    }
     if '=' in line:
         dest, line = line.split('=')
         parsed.update({'dest': dest})
@@ -73,11 +77,5 @@ def parse_instruction(line):
         parsed.update({'comp': comp, 'jump': jump})
     else:
         parsed.update({'comp': line})
-
-    # fill defaults of 'null' for jump and dest
-    if not 'dest' in parsed:
-        parsed['dest'] = 'null'
-    if not 'jump' in parsed:
-        parsed['jump'] = 'null'
     return parsed
 
