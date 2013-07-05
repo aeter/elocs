@@ -84,11 +84,20 @@ def make_machine_code(symbols, parsed_lines):
             if symbols.contains(line['symbol']):
                 translated.append(to_binary(
                     symbols.get_address(line['symbol'])))
-            else:
+            else: # new variable?
                 symbols.allocate(line['symbol'])
+                translated.append(to_binary(
+                    symbols.get_address(line['symbol'])))
         elif line['type'] == 'instruction':
             # TODO
+            5
     return translated
+
+def to_binary(num):
+    binary_num = bin(num)[2:] # bin(4) = '0b100', this strips 0b
+    # add needed zeros, the instruction should be
+    # 16 characters long, like 0000 0001 0011 0101
+    return '0' * (16 - len(binary_num)) + binary_num
 
 def collect_label_variables(symbols, lines):
     '''
